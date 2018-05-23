@@ -17,6 +17,8 @@ apt_update 'update'
 
 # Get Architecture and set the repo accordingly
 execute 'Get_Arch_type' do
+
+  #Get Architecture of the system 32 bit or 64 bit
   arch = command 'lscpu | grep -i architecture'
 
   if arch == 'x86_64'
@@ -29,7 +31,7 @@ end
 # Create the MongoDB Repo file from template
 template "/etc/yum.repos.d/mongodb-org.3.4.repo" do
    source 'mongodb-org.repo-64.erb'
-   #source "#{templateRepoFile}"
+   #source #{templateRepoFile}
    action:create
 end
 
@@ -43,11 +45,6 @@ service 'mongod' do
   action [:start, :stop, :restart]
 end
 
-
-# Stop the MongoDB
-#service 'mongod' do
-#  action [:stop, :restart]
-#end
 
 # Make sure MongoDB starts after a reboot
 execute 'restart_enable_mongodb' do

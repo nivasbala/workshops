@@ -12,7 +12,6 @@ apt_update 'Update the apt cache daily' do
   action :periodic
 end
 
-
 # Run Apt (Yum Update ) now
 apt_update 'update'
 
@@ -28,23 +27,27 @@ execute 'Get_Arch_type' do
 end
 
 # Create the MongoDB Repo file from template
-template'/etc/yum.repos.d/mongodb-org.3.4.repo' do
+template "/etc/yum.repos.d/mongodb-org.3.4.repo" do
    source 'mongodb-org.repo-64.erb'
+   #source "#{templateRepoFile}"
+   action:create
 end
 
 # Install mongodb-org component
-package 'mongodb-org'
+package 'mongodb-org' do
+  action:install
+end
 
-# Start the MongoDB
+# Start the MongoDB, Stop it and Restart it
 service 'mongod' do
-  action:start
+  action [:start, :stop, :restart]
 end
 
 
 # Stop the MongoDB
-service 'mongod' do
-  action [:stop, :restart]
-end
+#service 'mongod' do
+#  action [:stop, :restart]
+#end
 
 # Make sure MongoDB starts after a reboot
 execute 'restart_enable_mongodb' do

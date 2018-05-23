@@ -33,3 +33,8 @@ end
 describe port(27017) do
   it {should be_listening}
 end
+
+# Check if restart enable for mongod - check chkconfig on was set
+describe command('systemctl list-unit-files | grep mongod') do
+  its('stdout')  {should match /mongod.service .* enabled/ }
+end

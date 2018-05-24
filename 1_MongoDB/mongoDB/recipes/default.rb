@@ -6,12 +6,10 @@
 #
 #
 
-
 #############
 # Variables #
 #############
 template_repofile = ''
-
 
 # Set Apt (Yum in this case) to run periodically
 apt_update 'Update the apt cache daily' do
@@ -38,7 +36,7 @@ end
 
 # Create the MongoDB Repo file from template
 template '/etc/yum.repos.d/mongodb-org.3.4.repo' do
-  #source "#{template_repofile}"
+  # source "#{template_repofile}"
   source template_repofile.to_s
   action:create
 end

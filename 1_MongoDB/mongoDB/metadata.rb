@@ -1,5 +1,5 @@
 name 'mongoDB'
-maintainer 'Srini Chef Mongo Project'
+maintainer 'Srini Bala'
 maintainer_email 'srini@example.com'
 license 'All Rights Reserved'
 description 'Installs/Configures mongoDB'
@@ -12,7 +12,7 @@ supports 'centos'
 # tracked.  A `View Issues` link will be displayed on this cookbook's page when
 # uploaded to a Supermarket.
 #
-issues_url 'https://github.com/nivasbala/workshops/tree/srib-local/1_MongoDB/mongoDB/issues'
+issues_url 'https://github.com/nivasbala/workshops/tree/srib-local/1_MongoDB/mongoDB'
 
 # The `source_url` points to the development repository for this cookbook.  A
 # `View Source` link will be displayed on this cookbook's page when uploaded to

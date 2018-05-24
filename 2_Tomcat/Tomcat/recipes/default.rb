@@ -7,8 +7,8 @@
 #############
 # Variables #
 #############
-tomcat_binary = "apache-tomcat-8.5.20.tar.gz"
-tomcat_path = "/opt/tomcat"
+tomcat_binary = 'apache-tomcat-8.5.20.tar.gz'
+tomcat_path = '/opt/tomcat'
 
 # Set Apt (Yum in this case) to run periodically
 apt_update 'Update the apt cache daily' do
@@ -27,7 +27,7 @@ package 'java-1.7.0-openjdk-devel' do
 end
 
 # Create Tomcat group and user
-group 'tomcat'do
+group 'tomcat' do
   action:create
 end
 
@@ -40,23 +40,23 @@ user 'tomcat' do
 end
 
 # Delete if file already present - If you are paranoid
-#file '/tmp/apache-tomcat-8.5.20.tar.gz' do
-#  only_if {::File.exist?('/tmp/apache-tomcat-8.5.20.tar.gz') }
-#  action:delete
-#end
-    
+# file '/tmp/apache-tomcat-8.5.20.tar.gz' do
+#   only_if {::File.exist?('/tmp/apache-tomcat-8.5.20.tar.gz') }
+#   action:delete
+# end
+
 # Download the tomcat tarball to /tmp directory
 execute 'get-tomcat-tarball' do
-  command "wget -O /tmp/#{tomcat_binary} https://archive.apache.org/dist/tomcat/tomcat-8/v8.5.20/bin/#{tomcat_binary}" 
+  command "wget -O /tmp/#{tomcat_binary} https://archive.apache.org/dist/tomcat/tomcat-8/v8.5.20/bin/#{tomcat_binary}"
   action:run
 end
 
 # Extract the files from the tarball to /opt/tomcat
 script 'extract_tomcat' do
-  interpreter "bash"
+  interpreter 'bash'
   cwd '/tmp'
   code <<-EOH
-    mkdir -p #{tomcat_path }
+    mkdir -p #{tomcat_path}
     tar xzf 'apache-tomcat-8.5.20.tar.gz' -C #{tomcat_path} --strip-components=1
     EOH
 end
@@ -69,10 +69,10 @@ end
 
 # Set Ownership group and user for /opt/tomcat to tomcat
 script 'set_tomcat_dir_permission' do
-  interpreter "bash"
+  interpreter 'bash'
   cwd tomcat_path
   code <<-EOH
-    #chmod -R 755 
+    # chmod -R 755
     chmod -R g+r conf/
     chmod -R g+x conf/
     chown -R tomcat webapps work temp logs
@@ -85,13 +85,13 @@ template '/etc/systemd/system/tomcat.service' do
   action:create
 end
 
-# Restart systemd 
+# Restart systemd
 execute 'systemd_restart' do
   command 'systemctl daemon-reload'
   action:run
 end
 
-#Start tomcat service and enable
+# Start tomcat service and enable
 service 'tomcat' do
   action [:start, :enable]
 end

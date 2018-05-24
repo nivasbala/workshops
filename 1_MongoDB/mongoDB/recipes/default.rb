@@ -6,6 +6,13 @@
 #
 #
 
+
+#############
+# Variables #
+#############
+template_repofile = ''
+
+
 # Set Apt (Yum in this case) to run periodically
 apt_update 'Update the apt cache daily' do
   frequency 86_400
@@ -13,9 +20,10 @@ apt_update 'Update the apt cache daily' do
 end
 
 # Run Apt (Yum Update ) now
-apt_update 'update'
+apt_update 'update' do
+  action:update
+end
 
-template_repofile = ''
 # Get Architecture and set the repo accordingly
 execute 'Get_Arch_type' do
   # Get Architecture of the system 32 bit or 64 bit
@@ -30,8 +38,8 @@ end
 
 # Create the MongoDB Repo file from template
 template '/etc/yum.repos.d/mongodb-org.3.4.repo' do
-  source 'mongodb-org.repo-64.erb'
-  # source #{templateRepoFile}
+  #source "#{template_repofile}"
+  source template_repofile.to_s
   action:create
 end
 

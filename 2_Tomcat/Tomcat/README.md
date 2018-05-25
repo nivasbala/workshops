@@ -6,10 +6,11 @@
   This cookbook contains the Installation of **Tomcat** on **centOs**
 
 ### Template
-  The Template for tomcat.service file created
+  - The Template for tomcat.service file created
+  - Created using chef generate template
 
 ### Receipe
-  - Recipe update to include instructions from INSTRUCTION.md
+  - Recipe update to include instructions from **INSTRUCTION.md**
 
 ### kitchen.yml
   - Kitchen.yml was change to include a local interface so webpage can be accessed from the host
@@ -28,3 +29,4 @@
   - Test to check if tomcat.service file was created
   - Test to check if tomcat service is running
   - Test to check output of curl on localhost:8080
+  - Ran **kitchen test** sucessfully

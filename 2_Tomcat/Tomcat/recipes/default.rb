@@ -39,16 +39,11 @@ user 'tomcat' do
   action:create
 end
 
-# Delete if file already present - If you are paranoid
-# file '/tmp/apache-tomcat-8.5.20.tar.gz' do
-#   only_if {::File.exist?('/tmp/apache-tomcat-8.5.20.tar.gz') }
-#   action:delete
-# end
-
 # Download the tomcat tarball to /tmp directory
-execute 'get-tomcat-tarball' do
-  command "wget -O /tmp/#{tomcat_binary} https://archive.apache.org/dist/tomcat/tomcat-8/v8.5.20/bin/#{tomcat_binary}"
-  action:run
+tmp_file_path = Chef::Config[:file_cache_path] + tomcat_binary
+remote_file tmp_file_path do
+  source 'https://archive.apache.org/dist/tomcat/tomcat-8/v8.5.20/bin/#{tomcat_binary}'
+  action:create
 end
 
 # Extract the files from the tarball to /opt/tomcat

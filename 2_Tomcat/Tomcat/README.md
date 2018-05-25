@@ -19,4 +19,12 @@
   - Ran kitchen login to verify the services were started 
   - Ran cookstyle - Corrected all errors
   - Ran foodcritic - Corrected errors
+  - Ran InSpec Test cases
 
+#### Inspec Test Cases
+  - Test to check if Java Package installed
+  - Test to check Group and User tomcat created
+  - Test to check if /opt/tomcat was created and permissions and group set
+  - Test to check if tomcat.service file was created
+  - Test to check if tomcat service is running
+  - Test to check output of curl on localhost:8080

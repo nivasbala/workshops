@@ -5,6 +5,10 @@
 # The Inspec reference, with examples and extensive documentation, can be
 # found at http://inspec.io/docs/reference/resources/
 
+#####################
+# InSpec Test Start #
+#####################
+
 unless os.windows?
   # This is an example test, replace with your own test.
   describe user('root'), :skip do
@@ -29,12 +33,6 @@ end
 
 # Check if tomcat user is created
 describe user('tomcat') do
-  it { should exist }
-end
-
-# Check if the tomcat binary was downloaded to /tmp
-# Not sure if this needs to be checked - this is a temp file
-describe file('/tmp/apache-tomcat-8.5.20.tar.gz') do
   it { should exist }
 end
 

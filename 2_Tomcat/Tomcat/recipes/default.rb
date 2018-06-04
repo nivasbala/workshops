@@ -10,6 +10,16 @@
 tomcat_binary = 'apache-tomcat-8.5.20.tar.gz'
 tomcat_path = '/opt/tomcat'
 
+# The Temporary File location for the system (defined the system)
+tmp_file_path = Chef::Config[:file_cache_path]
+
+# local file name to put the tar bar
+local_file_name = tmp_file_path.to_s + "\/" + tomcat_binary.to_s
+
+################
+# Recipe Start #
+################
+
 # Set Apt (Yum in this case) to run periodically
 apt_update 'Update the apt cache daily' do
   frequency 86_400
@@ -40,16 +50,15 @@ user 'tomcat' do
 end
 
 # Download the tomcat tarball to /tmp directory
-tmp_file_path = Chef::Config[:file_cache_path] + tomcat_binary
-remote_file tmp_file_path do
-  source 'https://archive.apache.org/dist/tomcat/tomcat-8/v8.5.20/bin/#{tomcat_binary}'
+remote_file local_file_name do
+  source "https://archive.apache.org/dist/tomcat/tomcat-8/v8.5.20/bin/#{tomcat_binary}"
   action:create
 end
 
 # Extract the files from the tarball to /opt/tomcat
 script 'extract_tomcat' do
   interpreter 'bash'
-  cwd '/tmp'
+  cwd tmp_file_path.to_s
   code <<-EOH
     mkdir -p #{tomcat_path}
     tar xzf 'apache-tomcat-8.5.20.tar.gz' -C #{tomcat_path} --strip-components=1

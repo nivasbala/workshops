@@ -7,8 +7,10 @@
 #############
 # Variables #
 #############
-tomcat_binary = 'apache-tomcat-8.5.20.tar.gz'
+tomcat_version = node['tomcat']['version']
+tomcat_binary = "apache-tomcat-#{tomcat_version}.tar.gz"
 tomcat_path = '/opt/tomcat'
+java_version = node['java']['version']
 
 # The Temporary File location for the system (defined the system)
 tmp_file_path = Chef::Config[:file_cache_path]
@@ -32,7 +34,7 @@ apt_update 'update' do
 end
 
 # Install Java
-package 'java-1.7.0-openjdk-devel' do
+package "java-#{java_version}-openjdk-devel" do
   action:install
 end
 
@@ -49,9 +51,9 @@ user 'tomcat' do
   action:create
 end
 
-# Download the tomcat tarball to /tmp directory
+# Download the tomcat tarball to tmp directory defined by the system
 remote_file local_file_name do
-  source "https://archive.apache.org/dist/tomcat/tomcat-8/v8.5.20/bin/#{tomcat_binary}"
+  source "https://archive.apache.org/dist/tomcat/tomcat-8/v#{tomcat_version}/bin/#{tomcat_binary}"
   action:create
 end
 
@@ -61,7 +63,7 @@ script 'extract_tomcat' do
   cwd tmp_file_path.to_s
   code <<-EOH
     mkdir -p #{tomcat_path}
-    tar xzf 'apache-tomcat-8.5.20.tar.gz' -C #{tomcat_path} --strip-components=1
+    tar xzf 'apache-tomcat-#{tomcat_version}.tar.gz' -C #{tomcat_path} --strip-components=1
     EOH
 end
 
